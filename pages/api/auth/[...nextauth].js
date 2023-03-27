@@ -72,8 +72,9 @@ export const authOptions = {
       const isSignIn = user ? true : false;
       if (isSignIn) {
 // console.log({account})
+console.log("NEXTAUTH_API", process.env.NEXTAUTH_API);
         const response = await fetch(
-          `${process.env.NEXTAUTH_URL}/api/auth/${account.provider}/callback?access_token=${account.access_token}`
+          `${process.env.NEXTAUTH_API}/api/auth/${account.provider}/callback?access_token=${account.access_token}`
       );
       const data = await response.json();
       // console.log({ data })
