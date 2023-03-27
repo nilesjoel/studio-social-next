@@ -73,7 +73,7 @@ export const authOptions = {
       if (isSignIn) {
 // console.log({account})
         const response = await fetch(
-          `http://127.0.0.1:1337/api/auth/${account.provider}/callback?access_token=${account.access_token}`
+          `${process.env.NEXTAUTH_URL}/api/auth/${account.provider}/callback?access_token=${account.access_token}`
       );
       const data = await response.json();
       // console.log({ data })
@@ -93,7 +93,7 @@ export const authOptions = {
           redirect: 'follow'
         };
 
-        fetch("http://127.0.0.1:1337/studio-profile/verify", requestOptions)
+        fetch(`${process.env.NEXTAUTH_API}/studio-profile/verify`, requestOptions)
           .then(response => response.text())
           .then(result => {
             console.log({result})
