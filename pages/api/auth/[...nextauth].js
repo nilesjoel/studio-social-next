@@ -1,0 +1,144 @@
+import NextAuth, { NextAuthOptions } from "next-auth"
+import GoogleProvider from "next-auth/providers/google"
+import FacebookProvider from "next-auth/providers/facebook"
+import GithubProvider from "next-auth/providers/github"
+import TwitterProvider from "next-auth/providers/twitter"
+import Auth0Provider from "next-auth/providers/auth0"
+// import AppleProvider from "next-auth/providers/apple"
+// import EmailProvider from "next-auth/providers/email"
+
+// For more information on each option (and a full list of options) go to
+// https://next-auth.js.org/configuration/options
+export const authOptions = {
+  // https://next-auth.js.org/configuration/providers/oauth
+  providers: [
+    /* EmailProvider({
+         server: process.env.EMAIL_SERVER,
+         from: process.env.EMAIL_FROM,
+       }),
+    // Temporarily removing the Apple provider from the demo site as the
+    // callback URL for it needs updating due to Vercel changing domains
+
+    Providers.Apple({
+      clientId: process.env.APPLE_ID,
+      clientSecret: {
+        appleId: process.env.APPLE_ID,
+        teamId: process.env.APPLE_TEAM_ID,
+        privateKey: process.env.APPLE_PRIVATE_KEY,
+        keyId: process.env.APPLE_KEY_ID,
+      },
+    }),
+    */
+    FacebookProvider({
+      clientId: process.env.FACEBOOK_ID,
+      clientSecret: process.env.FACEBOOK_SECRET,
+    }),
+    GithubProvider({
+      clientId: process.env.GITHUB_ID,
+      clientSecret: process.env.GITHUB_SECRET,
+    }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_ID,
+      clientSecret: process.env.GOOGLE_SECRET,
+    }),
+    TwitterProvider({
+      clientId: process.env.TWITTER_ID,
+      clientSecret: process.env.TWITTER_SECRET,
+    }),
+    Auth0Provider({
+      clientId: process.env.AUTH0_ID,
+      clientSecret: process.env.AUTH0_SECRET,
+      issuer: process.env.AUTH0_ISSUER,
+    }),
+  ],
+  theme: {
+    colorScheme: "light",
+  },
+  callbacks: {
+    async signIn({ user, account, profile, email, credentials }) {
+      // console.log({ user, account, profile, email, credentials })
+      return true
+    },
+    async redirect({ url, baseUrl }) {
+      // console.log({ url, baseUrl })
+      return baseUrl
+    },
+    async session({ session, token, user }) {
+      // console.log({ session, token, user })
+      return session
+    },
+    async jwt({ token, user, account, profile, isNewUser }) {
+
+      const isSignIn = user ? true : false;
+      if (isSignIn) {
+// console.log({account})
+        const response = await fetch(
+          `http://127.0.0.1:1337/api/auth/${account.provider}/callback?access_token=${account.access_token}`
+      );
+      const data = await response.json();
+      // console.log({ data })
+      token.jwt = data.jwt;
+      token.id = data.user.id;
+      console.log({ token })
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        
+        var raw = JSON.stringify({ user, token });
+
+        var requestOptions = {
+          method: 'POST',
+          headers: myHeaders,
+          body: raw,
+          redirect: 'follow'
+        };
+
+        fetch("http://127.0.0.1:1337/studio-profile/verify", requestOptions)
+          .then(response => response.text())
+          .then(result => {
+            console.log({result})
+          
+            const { symmetryToken } = result;
+            console.log({ result })
+            // token.profile = profile;
+            token.symmetryToken = symmetryToken
+            
+          })
+          .catch(error => console.log('error', error));
+      }
+      return token
+    }
+  },
+  events: {
+    async signIn(message) {
+      /* on successful sign in */
+    },
+    async signOut(message) { /*on successful sign in */ },
+    async createUser(message) {
+      /* user created */
+    },
+    async linkAccount(message) { /* account linked to a user */ },
+    async session(message) { /* session is active */ },
+    // async error(message) { /* error in authentication flow */ }
+  },
+  pages: {
+    signIn: "/auth/signin",
+    signOut: '/auth/signout',
+    error: '/auth/error', // Error code passed in query string as ?error=
+    verifyRequest: '/auth/verify', // (used for check email message)
+    newUser: null // If set, new users will be directed here on first sign in
+  },
+  logger: {
+    error(code, metadata) {
+      // console.error(code, metadata)
+    },
+    warn(code) {
+      // console.warn(code)
+    },
+    debug(code, metadata) {
+      // console.debug(code, metadata)
+    }
+  }
+}
+
+export default NextAuth(authOptions)
