@@ -67,26 +67,29 @@ export const authOptions = {
       // console.log({ session, token, user })
       return session
     },
-    async jwt({ token, user, account, profile, isNewUser }) {
+    async jwt({ token, user, account }) {
 
       const isSignIn = user ? true : false;
       if (isSignIn) {
-// console.log({account})
-console.log("NEXTAUTH_API", process.env.NEXTAUTH_API);
+
         const response = await fetch(
           `${process.env.NEXTAUTH_API}/api/auth/${account.provider}/callback?access_token=${account.access_token}`
-      );
-      const data = await response.json();
-      // console.log({ data })
-      token.jwt = data.jwt;
-      token.id = data.user.id;
-      console.log({ token })
+        );
+
+        const data = await response.json();
+        token.jwt = data.jwt;
+        token.id = data.user.id;
+        // token.email = data.user.email;
+        // token.name = data.user.username;
+        // token.image = data.user.avatar.url;
+        // token.role = data.user.role.name;
+        // token.provider = account.provider;
+        // token.accessToken = account.access_token;
+
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
-        
         var raw = JSON.stringify({ user, token });
-
         var requestOptions = {
           method: 'POST',
           headers: myHeaders,
@@ -97,13 +100,12 @@ console.log("NEXTAUTH_API", process.env.NEXTAUTH_API);
         fetch(`${process.env.NEXTAUTH_API}/studio-profile/verify`, requestOptions)
           .then(response => response.text())
           .then(result => {
-            console.log({result})
-          
-            const { symmetryToken } = result;
-            console.log({ result })
-            // token.profile = profile;
-            token.symmetryToken = symmetryToken
+            // console.log(JSON.parse(result))
+            const { profile, studioToken } = JSON.parse(result);
             
+            token.profile = profile;
+            token.studioToken = studioToken
+            // console.log({ token })
           })
           .catch(error => console.log('error', error));
       }
@@ -131,10 +133,10 @@ console.log("NEXTAUTH_API", process.env.NEXTAUTH_API);
   },
   logger: {
     error(code, metadata) {
-      // console.error(code, metadata)
+      console.error(code, metadata)
     },
     warn(code) {
-      // console.warn(code)
+      console.warn(code)
     },
     debug(code, metadata) {
       // console.debug(code, metadata)

@@ -7,13 +7,13 @@ declare module 'styled-components' {
   export interface DefaultTheme {
     colors: {
       primaryColor: string,
-      primaryBlue: string,
+      // primaryBlue: string,
       secondaryColor: string,
       secondaryDark : string,
       darkColor: string,
-      lightColor: string,
-      accentColor: string,
-      accentBlue: string,
+      // lightColor: string,
+      // accentColor: string,
+      // accentBlue: string,
       primary: string,
       secondary: string,
       background: string

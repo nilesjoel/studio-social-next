@@ -82,18 +82,18 @@ export function Footer() {
   // }];
 
   const siteLinks = [
-    {
-      title: "Artist",
-      slug: "/artist"
-    },
-    {
-      title: "Gallery",
-      slug: "/"
-    },
-    {
-      title: "Contact",
-      slug: "/contact"
-    },
+    // {
+    //   title: "Artist",
+    //   slug: "/artist"
+    // },
+    // {
+    //   title: "Gallery",
+    //   slug: "/"
+    // },
+    // {
+    //   title: "Contact",
+    //   slug: "/contact"
+    // },
 
     // {
     //   title: "Swipe",

@@ -19,7 +19,7 @@ interface HeaderMenuProps {
 
 export const HeaderBar = styled.nav<HeaderBarProps>`
   ${glory.style}
-    background-color:${({ theme }) => theme.colors.darkColor};
+    background-color:${({ theme }) => theme.colors.secondaryDark};
 
    height: 80px;
   display: flex;

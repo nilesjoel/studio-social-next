@@ -85,7 +85,7 @@ const IndexPage = ({
 
 export const getServerSideProps = async ({ req }) => {
   const session = await getSession({ req });
-  // console.log(session);
+  console.log({session});
   return {
     props: {
       session2 : session,
