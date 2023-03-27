@@ -14,7 +14,7 @@ const Stack = styled.div``
 export default function SignIn({ providers, csrfToken }) {
   // console.log(providers);
 
-  const [redirectUrl, setRedirectUrl] = useState("http://location:1337");
+  const [redirectUrl, setRedirectUrl] = useState(process.env.NEXTAUTH_API);
   const router = useRouter()
   useEffect(() => {
     const url = new URL(location.href);
