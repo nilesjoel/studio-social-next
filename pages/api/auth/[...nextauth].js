@@ -63,17 +63,18 @@ export const authOptions = {
       // console.log({ url, baseUrl })
       return baseUrl
     },
-    async session(session, token) {
+    async session({ session, token, user }) {
+      // console.log({ session, token, user })
+
       // console.log(" on session callback---->", { session, token })
-      // console.log(session.user)
-      // Update Session with Profile & JWT
-      // session.profile = token.profile;
-      // session.symmetryToken = token.symmetryToken;
-      // console.log("WITHTOKEN___", {session})
-      // session.account = { "this": "data" }
-      // session.aToken = token;
-      return session;
-  
+            // console.log(session.user)
+            // Update Session with Profile & JWT
+            // session.profile = token.profile;
+            // session.symmetryToken = token.symmetryToken;
+            // console.log("WITHTOKEN___", {session})
+            // session.account = { "this": "data" }
+            session.token = token;
+      return session
     },
     async jwt({ token, user, account }) {
 

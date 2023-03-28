@@ -55,7 +55,11 @@ export function StudioContextProvider({ children, state }: StudioContextProvider
 
             fetch(`https://dashboard.studiosymmetries.com/studio-artist/artist`)
                 .then((response) => response.json())
-                .then((data) => console.log(data))
+                .then((data) => {
+                 
+                 
+                    // console.log(data)
+                })
                 .catch((error) => console.log('An error occurred'));
         };
 

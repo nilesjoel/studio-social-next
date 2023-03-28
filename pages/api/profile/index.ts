@@ -25,7 +25,7 @@ export async function getProfileData(req){
       body: JSON.stringify(token)
     });
     const data = await response.json();
-    console.log("GOT DATA", data)
+    // console.log("GOT DATA", data)
     return data;
 
   } catch (error) {

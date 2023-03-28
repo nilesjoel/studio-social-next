@@ -17,7 +17,7 @@ export default function ServerSidePage(props) {
     }
 
     const { user } = props?.userData;
-    console.log("SERVER", { user })
+    // console.log("SERVER", { user })
     return <><strong>User // </strong>{user.name} / {user.email}</>
   }
   return (
@@ -39,7 +39,7 @@ export default function ServerSidePage(props) {
 export async function getServerSideProps(context: GetServerSidePropsContext) {
 
   const session = await getServerSession(context.req, context.res, authOptions);
-  console.log({ session })
+  // console.log({ session })
   return {
     props: {
       userData: session
