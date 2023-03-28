@@ -29,7 +29,7 @@ export async function getProfileData(req){
     return data;
 
   } catch (error) {
-    throw new Error("MYERR", error);
+    console.log("ERROR", error)
   }
 }
 
