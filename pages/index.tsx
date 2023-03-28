@@ -4,8 +4,10 @@ import Link from "next/link";
 import React from "react";
 
 import { useSession } from "next-auth/react"
+
+import { getProfileData } from "./api/profile";
 const IndexPage = ({
-  session2,
+  session2, profileData
 }) => {
 
   const { data: session } = useSession()
@@ -18,6 +20,7 @@ const IndexPage = ({
 
     return (
       <div>
+        
         <Link href="/api/auth/signin">
           <button
             onClick={(e) => {
@@ -72,25 +75,29 @@ const IndexPage = ({
       <Head>
         <title>Index Page</title>
       </Head>
+
       <div className="navbar">
         {signOutButtonNode()}
         {signInButtonNode()}
       </div>
       <div className="text">
-        Hello world
+      <iframe src="/api/profile" />
+      <h1>{JSON.stringify(profileData, null, 5)}</h1>
       </div>
     </div>
   );
 };
 
-export const getServerSideProps = async ({ req }) => {
-  const session = await getSession({ req });
-  console.log({session});
-  return {
-    props: {
-      session2 : session,
-    },
-  };
-};
+
+  // This gets called on every request
+export async function getServerSideProps(context) {
+  // DEfine the Request
+  const { req } = context;
+  // Get the Profile Data
+  const data = await getProfileData(req);
+  // Return the Profile Data to the Page
+  return { props: { profileData: data } }
+}
+
 
 export default IndexPage;

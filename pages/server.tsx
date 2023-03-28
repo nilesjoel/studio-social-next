@@ -8,19 +8,28 @@ export default function ServerSidePage(props) {
   // populated on render without needing to go through a loading stage.
   // This means that the page will not flicker as it changes between loading
   // and rendering.
-  
-const { user } = props.userData;
-  console.log("SERVER",{user})
+  const { userData } = props;
+
+
+  const userBadge = () => {
+    if (!userData?.user) {
+      return false;
+    }
+
+    const { user } = props?.userData;
+    console.log("SERVER", { user })
+    return <><strong>User // </strong>{user.name} / {user.email}</>
+  }
   return (
     <>
-    
+
       <h1>Server Side Rendering</h1>
       <p>
         This page uses the <strong>getServerSession()</strong> method in{" "}
         <strong>getServerSideProps()</strong>.
       </p>
       <p>
- <strong>User</strong>{user.name} {user.email}
+{userBadge()}
       </p>
     </>
   )
@@ -28,12 +37,12 @@ const { user } = props.userData;
 
 // Export the `session` prop to use sessions with Server Side Rendering
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  
+
   const session = await getServerSession(context.req, context.res, authOptions);
- 
+  console.log({ session })
   return {
     props: {
-      userData : session
+      userData: session
     },
   }
 }
