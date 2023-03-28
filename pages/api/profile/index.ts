@@ -17,7 +17,7 @@ export async function getProfileData(req){
     const token = await getToken({ req })    
     // console.log({ token })
     // const { token }: Data = req.body;
-    const response = await fetch(`http://127.0.0.1:1337/studio-profile/profile`, {
+    const response = await fetch(`${process.env.NEXTAUTH_API}/studio-profile/profile`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
